@@ -1,18 +1,7 @@
-
-# Original datasets - never upload
-data/
-
-# Python cache
 __pycache__/
 *.pyc
-
-# Virtual environment
 .venv/
-
-# IDE settings
+venv/
 .vscode/
-
-# Generated analysis outputs
-reports/figures/
-step4_blackspot/results/
-step5_bsri/results/
+data/
+.DS_Store
