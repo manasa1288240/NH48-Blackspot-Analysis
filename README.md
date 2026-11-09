@@ -126,16 +126,6 @@ git clone <NH48_GITHUB_REPOSITORY_URL>
 
 5. Open the downloaded project folder in VS Code.
 
-## OPTION B: DOWNLOAD ZIP
-
-1. Open the NH-48 GitHub repository.
-2. Click Code.
-3. Select Download ZIP.
-4. Extract the downloaded ZIP file.
-5. Open the extracted folder in VS Code.
-
-If the project folder is already on your computer, simply open that existing folder. Do not create unnecessary duplicate copies.
-
 ---
 
 # 4. DATASET INFORMATION
