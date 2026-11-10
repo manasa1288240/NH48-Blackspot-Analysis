@@ -1,0 +1,6 @@
+method,AUC,AUC_CI_low,AUC_CI_high,precision@19,recall@19
+Logistic model,0.88,0.776,0.955,0.58,0.73
+Rank by FG count (2 yrs),0.92,0.845,0.978,0.63,0.8
+Rank by weighted points (2 yrs),0.914,0.824,0.975,0.58,0.73
+Rank by last year only,0.676,0.496,0.843,0.46,0.58
+Rule: FG>=3 (flags 19),,,,0.63,0.8
