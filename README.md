@@ -1,372 +1,106 @@
+# NH-48 Blackspot Analysis
+### Data-Driven Road Safety Assessment | Kadodara–Kosamba Highway Corridor, Gujarat, India
 
-# NH-48 BLACKSPOT ANALYSIS PROJECT
-### Kadodara–Kosamba Highway Corridor
-
-Welcome to the NH-48 Blackspot Analysis Project!
-
-This README is the common instruction manual for everyone working on this project. It explains the project structure, datasets, installation, how to run code, where to save files, how to use previous task results, and how to upload work to GitHub.
-
-The project analyses road crashes along the approximately 39 km NH-48 corridor between Kadodara and Kosamba. The work is divided into tasks so that team members can work independently while maintaining consistency across the project.
+A data-driven road safety analysis project focused on identifying high-risk accident locations, quantifying segment-level crash risk, studying crash severity, and exploring early-warning approaches along a section of National Highway 48 (NH-48) in Gujarat, India.
 
 ---
 
-# 1. IMPORTANT PROJECT RULES
+## 1. Project Overview
 
-Before starting your work, read these rules carefully.
+Road accidents are a major public safety concern, particularly along national highways where high traffic volumes, mixed road users, and varying road conditions can contribute to severe crashes.
 
-1. Do NOT modify, rename, overwrite, or delete the original CSV files inside the `data/` folder.
-2. Upload both your source code AND important generated results to GitHub.
-3. Save your Python scripts inside your assigned task folder.
-4. Save generated CSV files, graphs, model files, and other outputs inside your task's `results/` folder.
-5. Use the existing road `segment_id` values. Do not create a new road segmentation unless approved by the project lead.
-6. The established study period for Tasks 4 and 5 is 2023, 2024, and 2025.
-7. Do not independently change the severity weights, blackspot criteria, thresholds, or assumptions used in earlier tasks.
-8. Do not overwrite another member's scripts or results.
-9. If a required file, column, or result is missing, ask the project lead instead of assuming or inventing it.
-10. Document your methodology, assumptions, commands, results, and limitations.
+This project analyses accident patterns along an approximately **39 km stretch of NH-48 between Kadodara and Kosamba, Gujarat**.
 
-IMPORTANT:
+The objective is to move beyond simply counting accidents and develop a structured approach to understanding:
 
-GitHub should contain the completed project work, including source code, important output CSVs, graphs, and instructions.
+- Where are accidents concentrated along the highway?
+- Which road segments exhibit the highest accident severity?
+- Which locations satisfy the selected blackspot identification criteria?
+- How can accident severity and location-based risk be quantified?
+- Can historical crash patterns help identify segments that may become high-risk in the future?
+- How can the results be communicated through an interactive visualisation and scenario analysis tool?
 
-The original datasets are shared separately and are not uploaded to GitHub.
+The project combines exploratory data analysis, geospatial segmentation, blackspot identification, a Blackspot Severity Risk Index (BSRI), machine learning models, and an interactive Streamlit dashboard.
 
----
+## 2. Study Area
 
-# 2. PROJECT FOLDER STRUCTURE
-
-The project should follow this structure:
-
-```text
-NH48_Blackspot_Project/
-│
-├── data/                              # Original datasets (shared separately)
-│   ├── crash_clean.csv
-│   ├── crash_segmented.csv
-│   └── nh48_segments.csv
-│
-├── step3_eda/
-│   └── results/
-│
-├── step4_blackspot/
-│   ├── blackspot_analysis.py
-│   ├── fixed_segment_analysis.py
-│   └── results/
-│       ├── fixed_500m_segment_assessment.csv
-│       ├── fixed_500m_qualifying_segments.csv
-│       └── other Step 4 outputs
-│
-├── step5_bsri/
-│   ├── bsri_calculation.py
-│   └── results/
-│       ├── bsri_all_segments.csv
-│       ├── bsri_top_10_segments.csv
-│       └── bsri_top_15_plot.png
-│
-├── step6_prediction/
-│   └── results/
-│
-├── step7_dashboard/
-│
-├── step8_simulator/
-│   └── results/
-│
-├── reports/
-│   └── figures/
-│
-├── .gitignore
-└── README.md
-```
-
-Some later task folders may not exist yet. If your assigned folder is missing, create it.
-
-## PURPOSE OF EACH FOLDER
-
-| Folder | Purpose |
+| Parameter | Description |
 |---|---|
-| `data/` | Original project datasets |
-| `step3_eda/` | Exploratory Data Analysis |
-| `step4_blackspot/` | Blackspot identification code and results |
-| `step5_bsri/` | BSRI calculation code and results |
-| `step6_prediction/` | Prediction model code and results |
-| `step7_dashboard/` | Streamlit dashboard code |
-| `step8_simulator/` | What-if simulator code and results |
-| `reports/` | Final project report |
-| `reports/figures/` | Figures used in the final report |
+| Highway | National Highway 48 (NH-48) |
+| Study corridor | Kadodara–Kosamba |
+| Location | Gujarat, India |
+| Approximate corridor length | 39 km |
+| Road segmentation | Fixed 500 m segments |
+| Number of road segments | 77 |
 
-## WHERE SHOULD I SAVE MY FILES?
+The highway corridor is represented using sequential road segments, allowing crash records to be associated with specific locations and enabling comparison of accident patterns across the study area.
 
-For example, if you are working on Task 6:
+## 3. Project Objectives
 
-- Save your Python scripts inside `step6_prediction/`.
-- Save generated CSV files inside `step6_prediction/results/`.
-- Save graphs inside `step6_prediction/results/figures/` or `results/`.
-- Save model files inside `step6_prediction/results/` if required.
+1. **Exploratory Data Analysis:** Understand accident frequency, temporal patterns, crash severity, collision types, visibility conditions, and other contributing factors.
+2. **Blackspot Identification:** Identify candidate high-risk road stretches using the selected MoRTH blackspot identification criteria.
+3. **Blackspot Severity Risk Index:** Develop a segment-level risk score that accounts for accident severity and road segment length.
+4. **Crash Prediction and Early Warning:** Investigate whether historical accident patterns can help identify segments likely to meet the blackspot criterion in a subsequent observation window.
+5. **Crash Severity Modelling:** Examine the relationship between crash characteristics and the likelihood of fatal or grievous outcomes.
+6. **Interactive Dashboard:** Present the analysis results through an interactive interface.
+7. **What-if Analysis:** Explore hypothetical road-safety interventions and their estimated effects on risk indicators.
 
-Follow the same structure for your assigned task.
+## 4. Project Workflow and Methodology
 
-Every task member must upload their scripts and important generated results to GitHub.
+The project is organised into sequential analytical stages.
 
----
+### Step 3 — Exploratory Data Analysis (EDA)
 
-# 3. HOW TO DOWNLOAD AND OPEN THE PROJECT
+**Folder:** `step3_eda/`
 
-Ask the project lead for the correct NH-48 GitHub repository link.
+The exploratory analysis examines the crash dataset to understand the distribution and characteristics of accidents.
 
-## OPTION A: CLONE USING GIT
+The analysis includes:
 
-1. Install Git if it is not already installed.
-2. Open VS Code.
-3. Select Terminal → New Terminal.
-4. Execute the following command after replacing the placeholder with the actual repository URL:
+- Crashes by year and month.
+- Crashes by time of day.
+- Distribution of accident severity.
+- Collision types and nature of accidents.
+- Light and visibility conditions in relation to severity.
+- Traffic violations and initial observations.
+- Crash distribution across road segments.
+- Pedestrian-related crashes along the highway.
 
-```bash
-git clone <NH48_GITHUB_REPOSITORY_URL>
-```
+The generated visualisations are saved as PNG files for further interpretation and reporting.
 
-5. Open the downloaded project folder in VS Code.
+### Step 4 — Blackspot Identification
 
----
+**Folder:** `step4_blackspot/`
 
-# 4. DATASET INFORMATION
+This stage identifies candidate blackspot locations using the selected Ministry of Road Transport and Highways (MoRTH) 2015 protocol.
 
-The project contains three main CSV files.
+The analysis considers a three-calendar-year study period: **2023–2025**.
 
-| Dataset | Description |
-|---|---|
-| `crash_clean.csv` | Cleaned accident records |
-| `crash_segmented.csv` | Accident records mapped to existing road segments |
-| `nh48_segments.csv` | Road segment information, including segment IDs and length/geometry attributes |
+The selected identification criteria are:
 
-## HOW TO GET THE DATASETS
+- **Criterion 1:** Five or more road accidents involving fatalities or grievous injuries within the specified three-year period.
+- **Criterion 2:** Ten or more fatalities within the specified three-year period.
 
-The original datasets are NOT uploaded to GitHub.
+A road segment qualifies if it satisfies either criterion.
 
-1. Ask the project lead for the approved datasets.
-2. Open the main project folder.
-3. Create a folder named `data` if it does not exist.
-4. Place all three CSV files inside it.
-5. Keep their filenames exactly as given.
-6. Do not modify the original files.
+Two approaches are implemented:
 
-Your folder should look like this:
+1. **Fixed 500 m segment analysis:** Evaluates each predefined road segment independently.
+2. **Sliding-window analysis:** Examines overlapping 500 m stretches using a 50 m sliding interval to identify localised accident concentrations.
 
-```text
-NH48_Blackspot_Project/
-└── data/
-    ├── crash_clean.csv
-    ├── crash_segmented.csv
-    └── nh48_segments.csv
-```
+The analysis identified **34 candidate qualifying fixed road segments**.
 
-IMPORTANT:
+These are project-level analytical findings and should not be interpreted as officially notified government blackspots.
 
-Cloning the GitHub repository will not automatically download these CSV files. You must obtain them separately from the project lead.
+### Step 5 — Blackspot Severity Risk Index (BSRI)
 
-## DATASET FACTS
+**Folder:** `step5_bsri/`
 
-- Full crash dataset: 599 records.
-- Study period used in Tasks 4 and 5: 2023–2025.
-- Records in the 2023–2025 study period: 474.
-- Total road segments: 77.
-- Most segments are 500 metres long.
-- The final segment is shorter.
+Blackspot identification indicates whether a location satisfies the selected criteria. However, it does not fully describe the relative severity of risk across all road segments.
 
-The full-period `crash_count` field should not be confused with `total_accidents` calculated for the 2023–2025 BSRI study period.
+To address this, the project develops a Blackspot Severity Risk Index (BSRI).
 
-## HOW TO INSPECT THE DATASET
-
-Before writing code, inspect the actual column names.
-
-Example:
-
-```python
-import pandas as pd
-
-df = pd.read_csv("data/crash_segmented.csv")
-
-print(df.head())
-print(df.columns.tolist())
-print(df.shape)
-```
-
-Never assume a column exists without checking.
-
-If you need to filter or transform a dataset, save a NEW file inside your task's results folder. Never overwrite the original input CSV.
-
----
-
-# 5. PYTHON INSTALLATION AND LIBRARY SETUP
-
-Python is required to execute the project scripts.
-
-## STEP 1: CHECK PYTHON
-
-Open the VS Code terminal and run:
-
-```bash
-python --version
-```
-
-If that does not work, try:
-
-```bash
-py --version
-```
-
-If neither command works, install Python and make sure Add Python to PATH is selected during installation.
-
-## STEP 2: INSTALL COMMON PROJECT LIBRARIES
-
-Execute:
-
-```bash
-python -m pip install pandas numpy matplotlib seaborn scipy scikit-learn streamlit
-```
-
-If your computer uses `py` instead of `python`, execute:
-
-```bash
-py -m pip install pandas numpy matplotlib seaborn scipy scikit-learn streamlit
-```
-
-If you encounter:
-
-`ModuleNotFoundError: No module named 'package_name'`
-
-Install the missing package using:
-
-```bash
-python -m pip install package_name
-```
-
-Replace `package_name` with the actual missing library.
-
-Not every task requires every library.
-
----
-
-# 6. HOW TO RUN PYTHON FILES
-
-IMPORTANT: Always open the terminal from the MAIN PROJECT FOLDER.
-
-The main project folder is the folder containing:
-
-- data/
-- step3_eda/
-- step4_blackspot/
-- step5_bsri/
-- README.md
-
-In VS Code:
-
-1. Open the main project folder.
-2. Select Terminal → New Terminal.
-3. Make sure the terminal path ends with `NH48_Blackspot_Project`.
-4. Run your assigned Python script.
-
-### RUNNING TASK 4
-
-```bash
-python step4_blackspot/fixed_segment_analysis.py
-```
-
-### RUNNING TASK 5
-
-```bash
-python step5_bsri/bsri_calculation.py
-```
-
-### RUNNING TASK 6
-
-For example, if your script is named `train_model.py`:
-
-```bash
-python step6_prediction/train_model.py
-```
-
-Use the actual filename created by the Task 6 member.
-
-### RUNNING TASK 7 DASHBOARD
-
-For example, if the main dashboard file is named `app.py`:
-
-```bash
-streamlit run step7_dashboard/app.py
-```
-
-### RUNNING TASK 8
-
-The command depends on the actual simulator script filename.
-
-For example:
-
-```bash
-python step8_simulator/simulator.py
-```
-
----
-
-# 7. TASK-WISE RESPONSIBILITIES
-
-| Task | Work | Main folder |
-|---|---|---|
-| Task 1 | Project planning and initial preparation | Project root / relevant folder |
-| Task 2 | Data cleaning and road segmentation | Relevant task folder |
-| Task 3 | Exploratory Data Analysis | `step3_eda/` |
-| Task 4 | Blackspot Identification | `step4_blackspot/` |
-| Task 5 | BSRI Calculation | `step5_bsri/` |
-| Task 6 | Prediction Model | `step6_prediction/` |
-| Task 7 | Streamlit Dashboard | `step7_dashboard/` |
-| Task 8 | What-if Simulator | `step8_simulator/` |
-| Final | Report preparation and integration | `reports/` |
-
-## TASK 4: BLACKSPOT IDENTIFICATION
-
-Folder:
-
-`step4_blackspot/`
-
-The purpose of this stage is to identify candidate accident blackspots along NH-48.
-
-The analysis uses:
-
-- The 2023–2025 study period.
-- Existing 500-metre road segments.
-- MoRTH blackspot identification criteria.
-
-The criteria applied are:
-
-1. Five or more accident records involving fatalities or grievous injuries during the previous three calendar years.
-2. Ten or more fatalities during the previous three calendar years.
-
-Either criterion qualifies a segment.
-
-Current output files:
-
-```text
-step4_blackspot/results/
-│
-├── fixed_500m_segment_assessment.csv
-├── fixed_500m_qualifying_segments.csv
-├── all_sliding_windows.csv
-├── qualifying_blackspot_windows.csv
-└── blackspot_sliding_window_plot.png
-```
-
-The fixed-segment analysis identified 34 candidate qualifying segments.
-
-IMPORTANT: These are candidate blackspots identified using the university project dataset. They should not be described as officially notified government blackspots.
-
-## TASK 5: BLACKSPOT RISK INDEX (BSRI)
-
-Folder:
-
-`step5_bsri/`
-
-The purpose of this stage is to calculate a relative risk score for every road segment.
-
-The proposed severity weights are:
+The index uses project-defined severity weights:
 
 | Accident Severity | Weight |
 |---|---:|
@@ -376,434 +110,425 @@ The proposed severity weights are:
 | Minor non-hospitalized | 2 |
 | No injury | 1 |
 
-Weighted Severity Score:
+**Weighted Severity Score**
 
-`W = (5 × Fatal) + (4 × Grievous) + (3 × Minor hospitalized) + (2 × Minor non-hospitalized) + (1 × No injury)`
+W = (5 × Fatal) + (4 × Grievous) + (3 × Minor hospitalized) + (2 × Minor non-hospitalized) + (1 × No injury)
 
-Length-adjusted score:
+**Length-adjusted Severity Score**
 
-`Weighted Points per km = W / Segment Length in km`
+Weighted Points per km = W / Segment Length (km)
 
-Normalised BSRI:
+**Normalised BSRI**
 
-`BSRI = (Segment Weighted Points per km / Maximum Weighted Points per km) × 100`
+BSRI = (Segment Weighted Points per km / Maximum Weighted Points per km) × 100
 
-These are project-defined weights, not official MoRTH weights.
+The resulting index ranges from 0 to 100, with higher values representing greater relative severity-weighted crash concentration per kilometre within the analysed corridor.
 
-Current output files:
-
-```text
-step5_bsri/results/
-│
-├── bsri_all_segments.csv
-├── bsri_top_10_segments.csv
-└── bsri_top_15_plot.png
-```
+The BSRI is a project-developed comparative indicator, not an official MoRTH risk score.
 
 The analysis covers 77 road segments and 474 accident records from 2023–2025.
 
-The highest-ranked segment is S019, between 9.0 km and 9.5 km, with a BSRI of 100.
+The highest-ranked segment in the committed results is **S019 (9.0–9.5 km)**, with a BSRI of 100.
 
-## TASK 6: PREDICTION MODEL
+### Step 6 — Machine Learning Models
 
-Folder:
+**Folder:** `step6_model/`
 
-`step6_prediction/`
+This stage explores two distinct modelling problems.
 
-The purpose of this stage is to develop a suitable prediction model based on the approved project brief.
+**A. Early-Warning Model**
 
-The Task 6 member should:
+The early-warning model investigates whether the first two years of crash information can help identify road segments that will meet the fatal-plus-grievous accident criterion over a subsequent three-year observation window.
 
-1. Read the assigned Task 6 instructions.
-2. Understand exactly what needs to be predicted.
-3. Inspect the available datasets and actual column names.
-4. Identify suitable input features.
-5. Decide the prediction target based on the task brief and available data.
-6. Prepare the data for modelling.
-7. Split the data into training and testing sets appropriately.
-8. Train a suitable machine learning model.
-9. Evaluate the model using appropriate metrics.
-10. Compare it with a baseline where appropriate.
-11. Generate predictions.
-12. Save the code and results in the assigned folder.
+The implementation includes:
 
-Suggested structure:
+- Logistic regression.
+- Historical fatal-plus-grievous crash count baselines.
+- Weighted severity-based ranking.
+- Temporal backtesting.
+- Forward watchlists.
+- AUC, precision and recall evaluation.
+- Bootstrap-based uncertainty estimates.
+
+The model uses historical information to estimate future blackspot qualification rather than simply ranking segments using the same period being evaluated.
+
+**B. Crash-Severity Model**
+
+The severity model examines whether crash characteristics are associated with fatal or grievous outcomes.
+
+The target variable is:
+
+- 1 — Fatal or grievous crash.
+- 0 — Minor or no-injury crash.
+
+Models implemented:
+
+- Base-rate baseline.
+- Logistic regression.
+- Histogram-based gradient boosting classifier.
+
+The models are evaluated using ROC-AUC and Brier score, with uncertainty intervals also calculated.
+
+Importantly, this is a crash-severity association model, not a causal model or a real-time accident prediction system.
+
+### Interactive Dashboard
+
+**Folder:** `Nh48-dashboard/`
+
+The Streamlit dashboard presents the previously generated analytical results in an interactive format.
+
+Its features include:
+
+- Corridor-level crash risk information.
+- BSRI-based segment rankings.
+- Interactive road-segment visualisation.
+- Blackspot identification information.
+- Contributing-factor analysis.
+- BSRI sensitivity analysis.
+- What-if intervention scenarios.
+
+The dashboard reads precomputed results from its `data/` folder. It does not independently retrain the models or recalculate the original BSRI analysis.
+
+The map requires an internet connection for its online base layer.
+
+---
+
+## 5. Repository Structure
+
+The repository is organised as follows:
 
 ```text
-step6_prediction/
+NH48-Blackspot-Analysis/
 │
-├── train_model.py
-├── predict.py
+├── Nh48-dashboard/
+│   ├── app.py
+│   ├── whatif.py
+│   ├── requirements.txt
+│   │
+│   └── data/
+│       ├── bsri_all_segments.csv
+│       ├── bsri_sensitivity_summary.csv
+│       ├── bsri_top_10_segments.csv
+│       ├── bsri_top_segment_factors.csv
+│       ├── factor_intervention_matrix.csv
+│       ├── intervention_effects.csv
+│       └── nh48_segments.geojson
+│
+├── step3_eda/
+│   ├── eda_charts.py
+│   └── reports/
+│       └── figures/
+│
+├── step4_blackspot/
+│   ├── blackspot_analysis.py
+│   ├── fixed_segment_analysis.py
+│   └── results/
+│       ├── all_sliding_windows.csv
+│       ├── blackspot_sliding_window_plot.png
+│       ├── fixed_500m_qualifying_segments.csv
+│       ├── fixed_500m_segment_assessment.csv
+│       └── qualifying_blackspot_windows.csv
+│
+├── step5_bsri/
+│   ├── bsri_calculation.py
+│   └── results/
+│       ├── bsri_all_segments.csv
+│       ├── bsri_top_10_segments.csv
+│       └── bsri_top_15_plot.png
+│
+├── step6_model/
+│   ├── early_warning_model.py
+│   ├── severity_model.py
+│   └── results/
+│       ├── early_warning_metrics.csv
+│       ├── ew_backtest_2023_26.csv
+│       ├── ew_calibration.csv
+│       ├── ew_forward_watchlist_2024_27.csv
+│       ├── ew_metrics_no_duplicates.csv
+│       ├── ew_metrics_primary.csv
+│       ├── severity_metrics.csv
+│       └── severity_odds_ratios.csv
+│
+├── .gitignore
 ├── README.md
-│
-└── results/
-    ├── model_metrics.csv
-    ├── predictions.csv
-    └── figures/
+└── requirements.txt
 ```
 
-These filenames are suggestions. The Task 6 member may choose suitable names.
-
-IMPORTANT:
-
-Do not assume the prediction target without checking the task brief.
-
-Do not invent data, labels, features, or model performance.
-
-Do not use information from the test set during model training.
-
-If the available dataset does not support the intended prediction target, discuss this with the project lead before proceeding.
-
-## TASK 7: STREAMLIT DASHBOARD
-
-Folder:
-
-`step7_dashboard/`
-
-The purpose of this stage is to create an interactive dashboard presenting the project findings.
-
-The dashboard should use results generated by earlier tasks.
-
-The dashboard member should:
-
-- Read the relevant output CSV files.
-- Display accident statistics and visualisations.
-- Present blackspot information.
-- Present BSRI rankings.
-- Keep dashboard code inside `step7_dashboard/`.
-- Avoid modifying original datasets and previous task outputs.
-- Document the command required to run the dashboard.
-
-## TASK 8: WHAT-IF SIMULATOR
-
-Folder:
-
-`step8_simulator/`
-
-The purpose of this stage is to develop a simulator that allows users to explore hypothetical road-safety scenarios.
-
-The Task 8 member should:
-
-- Identify the parameters that can be changed.
-- Define the scenarios to be simulated.
-- Clearly distinguish actual data from hypothetical values.
-- Explain the assumptions used.
-- Generate and present simulation results.
-- Save code and important outputs inside `step8_simulator/`.
+*Note: The repository also contains additional generated results and supporting files that are not all expanded in the tree above.*
 
 ---
 
-# 8. USING RESULTS FROM PREVIOUS TASKS
+## 6. Dataset Information and Availability
 
-IMPORTANT:
+The project uses crash records and road-segment information supplied for the study.
 
-Later team members should use the results already generated by earlier tasks.
+### Primary datasets
 
-They do NOT need to rerun every earlier task just to obtain the results.
-
-For example, the Task 6 and Task 7 members can directly use the BSRI output file:
-
-```python
-import pandas as pd
-
-bsri = pd.read_csv(
-    "step5_bsri/results/bsri_all_segments.csv"
-)
-
-print(bsri.head())
-print(bsri.columns.tolist())
-```
-
-They can also directly read the blackspot results:
-
-```python
-blackspots = pd.read_csv(
-    "step4_blackspot/results/fixed_500m_qualifying_segments.csv"
-)
-
-print(blackspots.head())
-```
-
-These examples read the existing files. They do not modify them.
-
-## WHEN SHOULD I RERUN AN EARLIER TASK?
-
-Rerun an earlier task only when:
-
-- You need to reproduce or verify its results.
-- The project lead approves a change in methodology or input data.
-- The earlier task owner updates the code or results.
-- Your task specifically requires a fresh run.
-
-If you rerun an earlier script, check its output path and coordinate with the task owner before overwriting existing results.
-
----
-
-# 9. WHAT SHOULD BE UPLOADED TO GITHUB?
-
-EVERY TASK MEMBER SHOULD UPLOAD:
-
-1. Source code.
-2. Important generated CSV files.
-3. Important graphs and visualisations.
-4. Model files if required and reasonably sized.
-5. A short explanation of how to run the code and understand the outputs.
-
-For example:
-
-```text
-step4_blackspot/
-│
-├── blackspot_analysis.py
-├── fixed_segment_analysis.py
-│
-└── results/
-    ├── fixed_500m_segment_assessment.csv
-    ├── fixed_500m_qualifying_segments.csv
-    ├── all_sliding_windows.csv
-    └── blackspot_sliding_window_plot.png
-```
-
-```text
-step5_bsri/
-│
-├── bsri_calculation.py
-│
-└── results/
-    ├── bsri_all_segments.csv
-    ├── bsri_top_10_segments.csv
-    └── bsri_top_15_plot.png
-```
-
-## WHAT SHOULD NOT BE UPLOADED?
-
-Do not upload:
-
-- Original protected datasets from `data/`.
-- Passwords, API keys, or credentials.
-- Python cache files.
-- Virtual environments.
-- Temporary files that are not needed.
-- Very large model files without checking with the project lead.
-
-If an output or model file is too large for normal GitHub storage, discuss another storage method with the project lead.
-
----
-
-# 10. GITIGNORE AND DATA PROTECTION
-
-The root `.gitignore` should contain:
-
-```gitignore
-__pycache__/
-*.pyc
-.venv/
-venv/
-.vscode/
-data/
-.DS_Store
-```
-
-IMPORTANT:
-
-Do NOT add `results/` or `*.csv` to `.gitignore`.
-
-Otherwise, important generated results may not be uploaded to GitHub.
-
-The `data/` line keeps the original datasets out of GitHub. The project lead must share those files separately.
-
-If the original datasets were already committed to GitHub before adding this rule, adding `data/` to `.gitignore` alone does not remove previously tracked files. Ask the project lead to handle this carefully.
-
----
-
-# 11. GITHUB COLLABORATION: HOW TO UPLOAD YOUR WORK
-
-Every team member should work on their own branch.
-
-## STEP 1: GET THE LATEST CHANGES
-
-Open the terminal from the main project folder.
-
-```bash
-git pull
-```
-
-## STEP 2: CREATE YOUR OWN BRANCH
-
-For example, Task 6:
-
-```bash
-git switch -c task6-yourname
-```
-
-Replace `yourname` with your name or another unique identifier.
-
-## STEP 3: WORK ONLY IN YOUR ASSIGNED FOLDER
-
-For example:
-
-- Task 6: `step6_prediction/`
-- Task 7: `step7_dashboard/`
-- Task 8: `step8_simulator/`
-
-## STEP 4: CHECK YOUR CHANGES
-
-```bash
-git status
-```
-
-Check which files Git reports as modified or untracked.
-
-## STEP 5: ADD ONLY YOUR TASK FOLDER
-
-Task 6:
-
-```bash
-git add step6_prediction/
-```
-
-Task 7:
-
-```bash
-git add step7_dashboard/
-```
-
-Task 8:
-
-```bash
-git add step8_simulator/
-```
-
-## STEP 6: COMMIT YOUR WORK
-
-```bash
-git commit -m "Add Task 6 prediction model and results"
-```
-
-Change the message to describe your own task.
-
-## STEP 7: PUSH YOUR BRANCH
-
-```bash
-git push -u origin task6-yourname
-```
-
-Use your actual branch name.
-
-## STEP 8: CREATE A PULL REQUEST
-
-1. Open the project repository on GitHub.
-2. Create a Pull Request.
-3. Select your branch as the source branch.
-4. Select `main` as the destination branch.
-5. Describe the files and work you added.
-6. Ask the project lead to review and merge it.
-
-IMPORTANT GITHUB RULES:
-
-- Do not blindly use `git add .`.
-- Always check `git status` before committing.
-- Do not force-push to the shared main branch.
-- Do not delete or overwrite another member's files.
-- Do not upload protected datasets or credentials.
-- If you encounter a merge conflict, stop and ask for help.
-
----
-
-# 12. COMMON ERRORS AND SOLUTIONS
-
-| Problem | Solution |
+| Dataset | Description |
 |---|---|
-| Python is not recognised | Try `py --version`; install Python and enable PATH if needed. |
-| ModuleNotFoundError | Install the missing package using pip. |
-| FileNotFoundError | Check the terminal's current folder and the file path. |
-| KeyError | Check the actual CSV column names and spelling. |
-| Script creates no output | Read the script messages and check the results folder. |
-| Dataset missing after cloning | Ask the project lead for the CSVs and place them in `data/`. |
-| Git merge conflict | Ask the project lead for help. |
-| Unsure about your task | Read your task brief and clarify before coding. |
+| `crash_clean.csv` | Cleaned accident records |
+| `crash_segmented.csv` | Accident records associated with NH-48 road segments |
+| `nh48_segments.csv` | Road-segment information, including segment IDs and chainage boundaries |
+
+### Dataset summary
+
+- Full crash dataset: 599 records.
+- Records used in the 2023–2025 analysis: 474.
+- Total road segments: 77.
+- Fixed segment length: generally 500 m, with a shorter final segment.
+
+### Data availability
+
+**The original crash datasets are not included in this public GitHub repository.**
+
+They are shared separately with authorised project members.
+
+To run the full analysis scripts, obtain the approved datasets from the project team and create the following directory in the repository root:
+
+```text
+NH48-Blackspot-Analysis/
+│
+└── data/
+    ├── crash_clean.csv
+    ├── crash_segmented.csv
+    └── nh48_segments.csv
+```
+
+Keep the original filenames unchanged.
+
+The dashboard has its own precomputed datasets inside `Nh48-dashboard/data/`. These are included in the repository, so the dashboard can be run without downloading the original crash datasets.
 
 ---
 
-# 13. HOW TO USE THIS README AS A CHATGPT PROMPT
+## 7. Installation and Setup
 
-Every team member can upload this README to ChatGPT and use the prompt below.
+### Prerequisites
 
-## COPY-PASTE PROMPT
+- Python 3.10 or later.
+- Git.
+- Visual Studio Code or another Python-compatible editor.
+- Internet access for installing dependencies and loading the dashboard's online map layer.
 
-You are helping me work on the NH-48 Blackspot Analysis Project.
+### Step 1 — Clone the repository
 
-I have uploaded the project's README file. Read the entire README carefully before giving me instructions.
+```bash
+git clone https://github.com/manasa1288240/NH48-Blackspot-Analysis.git
+```
 
-MY ASSIGNED TASK IS:
+Navigate into the project:
 
-[WRITE YOUR TASK NUMBER AND TASK NAME HERE]
+```bash
+cd NH48-Blackspot-Analysis
+```
 
-I am a beginner and may not have much programming experience. Explain everything in simple language and guide me step by step.
+### Step 2 — Install dashboard dependencies
 
-PROJECT RULES:
+To run the interactive dashboard, execute:
 
-1. Follow the folder structure specified in the README.
-2. Use the existing project datasets and previous task outputs.
-3. Never modify, rename, overwrite, or delete the original CSV files in the data folder.
-4. Save my scripts inside my assigned task folder.
-5. Save important generated outputs inside my task's results folder.
-6. Upload important source code and generated results to GitHub.
-7. Use existing segment IDs.
-8. Follow the established 2023–2025 study period unless the project lead approves a change.
-9. Do not silently change earlier task assumptions, severity weights, thresholds, or results.
-10. Do not invent missing data, column names, results, or model performance.
-11. Do not overwrite another team member's work.
+```bash
+python -m pip install -r Nh48-dashboard/requirements.txt
+```
 
-BEFORE STARTING:
+### Step 3 — Install analysis dependencies
 
-1. Explain what my assigned task means.
-2. Explain what I am expected to achieve.
-3. Tell me which existing files I need.
-4. Tell me which datasets and earlier task outputs I should use.
-5. Explain which columns are required.
-6. Tell me which folders and files I need to create.
-7. Identify missing information and ask me before making assumptions.
+To run the analytical Python scripts, install:
 
-WHILE WORKING:
+```bash
+python -m pip install pandas numpy matplotlib seaborn scikit-learn
+```
 
-1. Guide me one step at a time.
-2. Give me exact filenames and folder paths.
-3. Give me copy-paste-ready Python code.
-4. Explain important parts of the code in simple language.
-5. Give me exact VS Code terminal commands.
-6. Explain what successful output should look like.
-7. Help me troubleshoot errors one at a time.
-8. Do not skip steps assuming I already know how to code.
-
-WHEN FINISHED:
-
-1. Tell me which files were generated.
-2. Tell me where each file should be saved.
-3. Explain the results in simple language.
-4. Explain assumptions and limitations.
-5. Give me a checklist of files to hand over.
-6. Explain how to upload my code and important results to GitHub safely.
-
-If my task brief conflicts with the README or earlier task outputs, point it out and ask the project lead which instruction to follow.
-
-Your goal is to help me complete my assigned task correctly while maintaining consistency with the rest of the NH-48 project.
+The dashboard dependencies and analysis dependencies can be installed in the same Python environment.
 
 ---
-# FINAL NOTE
 
-GitHub is the shared project workspace.
+## 8. Running the Project
 
-It should contain:
+Run commands from the main repository directory.
 
-- Source code.
-- Important generated CSV files.
-- Graphs and visualisations.
-- Model outputs where appropriate.
-- README files and instructions.
+### A. Launch the interactive dashboard
 
-The original datasets are shared separately and placed in the local `data/` folder.
+After installing the dashboard dependencies:
 
-Later task members should be able to use the committed results from earlier tasks directly. They should not need to rerun every previous task just to obtain those results.
+```bash
+python -m streamlit run Nh48-dashboard/app.py
+```
 
-The goal is to make sure every team member can understand what to do, where to save their work, how to run it, and how to hand it over without depending on someone else for every technical step.
+The dashboard will be available at:
+
+```text
+http://localhost:8501
+```
+
+The dashboard uses the precomputed files in `Nh48-dashboard/data/`.
+
+The following files are required:
+
+- `bsri_all_segments.csv`
+- `bsri_top_segment_factors.csv`
+- `bsri_sensitivity_summary.csv`
+
+The GeoJSON map and additional what-if analysis files are also included in the repository.
+
+### B. Run Exploratory Data Analysis
+
+First obtain the segmented crash dataset.
+
+Then run:
+
+```bash
+python step3_eda/eda_charts.py "data/crash_segmented.csv"
+```
+
+The generated figures are saved in:
+
+```text
+reports/figures/
+```
+
+### C. Run Blackspot Identification
+
+Ensure that the original datasets are available in the root `data/` directory.
+
+Run the fixed-segment analysis:
+
+```bash
+python step4_blackspot/fixed_segment_analysis.py
+```
+
+Run the sliding-window analysis:
+
+```bash
+python step4_blackspot/blackspot_analysis.py
+```
+
+Generated results are saved in:
+
+```text
+step4_blackspot/results/
+```
+
+### D. Run BSRI Calculation
+
+The BSRI calculation uses the crash dataset, road-segment dataset, and the fixed-segment assessment produced in Step 4.
+
+Run:
+
+```bash
+python step5_bsri/bsri_calculation.py
+```
+
+Generated results are saved in:
+
+```text
+step5_bsri/results/
+```
+
+### E. Run the Early-Warning Model
+
+Ensure that both the segmented crash dataset and road-segment dataset are available.
+
+Run:
+
+```bash
+python step6_model/early_warning_model.py
+```
+
+### F. Run the Crash-Severity Model
+
+Ensure that the segmented crash dataset is available.
+
+Run:
+
+```bash
+python step6_model/severity_model.py
+```
+
+Model outputs are saved in:
+
+```text
+step6_model/results/
+```
+
+**Important:** Steps 3–6 require the relevant original datasets. The dashboard can be launched independently using its bundled precomputed data.
+
+---
+
+## 9. Results and Key Outputs
+
+The repository contains generated outputs from the different analytical stages.
+
+| Stage | Important outputs |
+|---|---|
+| EDA | Eight exploratory visualisations |
+| Blackspot identification | Fixed-segment assessment and qualifying blackspot results |
+| BSRI | Segment-level risk scores, top-ranked segments and visualisation |
+| Early warning | Model evaluation metrics, backtesting and forward watchlists |
+| Severity modelling | Model metrics and odds-ratio results |
+| Dashboard | Interactive maps, rankings and what-if analysis |
+
+### Selected analytical findings
+
+- The fixed-segment blackspot analysis identified 34 candidate qualifying segments.
+- The BSRI analysis ranked segment S019 (9.0–9.5 km) highest, with a score of 100.
+- The early-warning model was evaluated against simpler historical-count and severity-based ranking approaches.
+- The crash-severity analysis compared logistic regression and gradient boosting with a base-rate baseline.
+
+The committed model evaluation results should be consulted directly for detailed performance comparisons. A higher model score does not automatically imply better real-world predictive performance.
+
+---
+
+## 10. Important Assumptions and Limitations
+
+The findings must be interpreted in the context of the available data and project methodology.
+
+1. **Dataset coverage:** The analysis is limited to the crash records made available for the study corridor.
+2. **Reporting bias:** Accident datasets may underrepresent certain crash types, particularly less severe incidents.
+3. **Study period:** Different analytical stages use different observation windows. The fixed blackspot and BSRI analyses use 2023–2025, while the early-warning and severity models use their explicitly defined temporal splits.
+4. **Segment-level analysis:** The results depend on the chosen road segmentation and chainage boundaries.
+5. **Project-defined BSRI:** Severity weights are proposed for this project and should not be interpreted as official government weights.
+6. **Blackspot classification:** Identified locations are analytical candidates based on the selected criteria, not necessarily officially notified blackspots.
+7. **Prediction limitations:** Historical patterns and model evaluation results do not guarantee future crash outcomes.
+8. **Association versus causation:** Factors associated with severe crashes should not automatically be interpreted as causes.
+9. **What-if scenarios:** Simulated intervention effects depend on the assumptions and parameters used in the simulator. They are not measured real-world intervention outcomes.
+
+---
+
+## 11. Technologies Used
+
+| Technology | Application |
+|---|---|
+| Python | Data analysis and modelling |
+| Pandas | Data manipulation |
+| NumPy | Numerical computations |
+| Matplotlib | Data visualisation |
+| Seaborn | Statistical visualisation |
+| Scikit-learn | Machine learning |
+| Streamlit | Interactive dashboard |
+| Plotly | Interactive charts |
+| GeoJSON | Geospatial road-segment representation |
+| Git and GitHub | Version control and collaboration |
+
+---
+
+## 12. Future Scope
+
+Potential extensions of the project include:
+
+- Incorporating additional years of accident data.
+- Integrating traffic volume and exposure-based risk measures.
+- Incorporating road geometry, lighting, and infrastructure characteristics.
+- Evaluating the models on larger and independently collected datasets.
+- Improving spatial and temporal validation.
+- Integrating real-time traffic and weather information.
+- Validating simulated interventions using actual before-and-after safety data.
+- Extending the dashboard to support additional highway corridors.
+
+---
+
+## 13. Contributors
+
+This project is a collaborative effort involving students from multiple engineering disciplines.
+
+Contributions include data preparation, exploratory analysis, geospatial processing, blackspot identification, risk-index development, machine learning, dashboard development, and road-safety interpretation.
+
+---
