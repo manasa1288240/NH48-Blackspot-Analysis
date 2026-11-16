@@ -1,0 +1,15 @@
+factor,intervention_id,priority,short_reason
+cn_head_on,I01,1,Median barrier targets cross-median head-on crashes (divided sections only)
+cn_hit_from_side,I03,1,Junction lighting; night junction injury crashes only
+light_night,I02,1,Continuous lighting targets night crashes on unlit sections
+light_night,I03,2,Junction lighting covers night crashes at junctions only
+light_night,I07,3,Marking visibility helps nighttime wet-road crashes only
+tv_high_speed,I04,1,Speed cameras target speeding
+tv_rash_driving,I04,2,Partial overlap: camera enforcement covers speeding only
+tv_drunk_driving,I05,1,Checkpoints target alcohol-involved crashes
+io_road_condition,I06,1,Surface friction treatment (assumes factor means pavement surface)
+cn_skidding_overturn,I06,1,Better friction targets skidding-type crashes (no direct CMF for this type)
+wx_light_rain,I07,1,Profiled markings tested for nighttime wet-road crashes
+wx_light_rain,I06,2,Friction treatment shows larger effect on wet-road crashes
+wx_mist_fog,I08,1,Fog countermeasure: NO SOURCE FOUND (evidence gap)
+wx_mist_fog,I07,2,Indirect visibility benefit only; not tested for fog

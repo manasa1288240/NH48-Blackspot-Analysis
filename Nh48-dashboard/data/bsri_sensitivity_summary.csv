@@ -1,0 +1,5 @@
+scenario,top10_overlap_with_primary,spearman_with_primary
+ordinal_5_4_3_2_1_weights,9,0.989
+no_eb_smoothing,10,0.995
+all_records,10,0.993
+scope_and_dup_excluded,9,0.993
